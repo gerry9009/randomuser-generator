@@ -9,7 +9,13 @@ export default function UserList() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get("https://randomuser.me/api?results=20").then((resp) => {
+    getUsersFromAPI();
+  }, []);
+
+  const getUsersFromAPI = (lengthOfNewUsersList = 5, nationality, gender) => {
+    const API = `https://randomuser.me/api?results=${lengthOfNewUsersList}&nat=${nationality}&gender=${gender}`;
+
+    axios.get(API).then((resp) => {
       const data = resp.data.results;
       const newUserList = data.map((user) => {
         const newUser = {
@@ -27,9 +33,20 @@ export default function UserList() {
         };
         return newUser;
       });
-      setUsers(newUserList);
+      setUsers((previousUserList) => [...previousUserList, ...newUserList]);
     });
-  }, []);
+  };
+
+  const handleMultipleFilter = (lengthOfNewUsersList, nationality, gender) => {
+    const getNationalityShortcut = Object.keys(NATIONALITIES).find(
+      (key) => NATIONALITIES[key] === nationality
+    );
+    getUsersFromAPI(lengthOfNewUsersList, getNationalityShortcut, gender);
+  };
+
+  const handleDeleteList = () => {
+    setUsers([]);
+  };
 
   const insertUserElements = users.map((user) => {
     return (
@@ -50,8 +67,14 @@ export default function UserList() {
   });
 
   return (
-    <Container className="d-flex flex-row flex-wrap justify-content-center">
-      {insertUserElements}
-    </Container>
+    <>
+      <UserFilter
+        handleMultipleFilter={handleMultipleFilter}
+        handleDeleteList={handleDeleteList}
+      />
+      <Container className="d-flex flex-row flex-wrap justify-content-center">
+        {insertUserElements}
+      </Container>
+    </>
   );
 }
