@@ -41,7 +41,7 @@ export default function UserFilter(props) {
   );
 
   return (
-    <Navbar bg="light" expand={false} className="sticky-top">
+    <Navbar bg="primary" variant="dark" expand={false} className="sticky-top">
       <Container fluid>
         <Navbar.Brand href="#">Random User</Navbar.Brand>
         <Navbar.Toggle aria-controls="offcanvasNavbar" />
