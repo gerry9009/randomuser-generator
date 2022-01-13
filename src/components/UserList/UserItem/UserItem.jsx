@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { Card, ListGroup, Form, CloseButton, Button } from "react-bootstrap";
+import {
+  Card,
+  ListGroup,
+  Form,
+  CloseButton,
+  Button,
+  FormSelect,
+} from "react-bootstrap";
 import NATIONALITIES from "../../../constants/nationalities.js";
+import VALIDATIONS from "../../../constants/validations.js";
+import VALIDATIONSFEEDBACK from "../../../constants/validationsFeedback.js";
 import getRandomKey from "../../../constants/getRandomKey.js";
-
-//Form.Control
-//validation
 
 export default function UserItem(props) {
   const [editMode, setEditMode] = useState(false);
@@ -12,22 +18,49 @@ export default function UserItem(props) {
   const changeEditMode = () => {
     setEditMode(!editMode);
   };
+  const handleChangeEditMode = (e) => {
+    e.preventDefault();
+    changeEditMode();
+  };
 
   const handleDeleteElement = () => {
     props.deleteElement(props.id);
   };
 
-  const updateElement = () => {
-    changeEditMode();
+  const updateElement = (e) => {
+    e.preventDefault();
+
     const datasetNodelist = [...document.querySelectorAll(".data")];
     const datasetKeyList = datasetNodelist.map((item) => item.dataset.key);
     const datasetValueList = datasetNodelist.map((item) => item.value);
 
-    datasetKeyList.forEach((key, index) => {
-      if (datasetValueList[index] !== props[key]) {
-        props.editElement(props.id, key, datasetValueList[index]);
+    let isValidForm = true;
+    datasetNodelist.forEach((item) => {
+      const validitionValue = validation(item);
+      if (!validitionValue) {
+        isValidForm = false;
       }
     });
+
+    if (isValidForm) {
+      datasetKeyList.forEach((key, index) => {
+        if (datasetValueList[index] !== props[key]) {
+          props.editElement(props.id, key, datasetValueList[index]);
+        }
+      });
+      changeEditMode();
+    }
+  };
+
+  const validation = (item) => {
+    item.classList.remove("is-invalid");
+    const itemValue = item.value.toString();
+    const itemKey = item.dataset.key;
+    const regex = new RegExp(VALIDATIONS[itemKey]);
+    if (!regex.test(itemValue)) {
+      item.classList.add("is-invalid");
+    }
+    return regex.test(itemValue);
   };
 
   const defaultView = (value) => {
@@ -42,18 +75,23 @@ export default function UserItem(props) {
   };
   const editView = (value, propsKey) => {
     return (
-      <Form.Control
-        className="border-top form-control-sm data"
-        data-key={propsKey}
-        defaultValue={value}
-      />
+      <>
+        <Form.Control
+          className="border-top form-control-sm data"
+          data-key={propsKey}
+          defaultValue={value}
+        />
+        <Form.Control.Feedback type="invalid">
+          {VALIDATIONSFEEDBACK[propsKey]}
+        </Form.Control.Feedback>
+      </>
     );
   };
 
   const editButton = () => {
     return (
       <div className="d-grid gap-2" style={{ width: "100%" }}>
-        <Button variant="secondary" onClick={changeEditMode}>
+        <Button variant="secondary" onClick={handleChangeEditMode}>
           Edit
         </Button>
       </div>
@@ -73,7 +111,7 @@ export default function UserItem(props) {
         <Button
           variant="outline-danger"
           style={{ width: "20%" }}
-          onClick={changeEditMode}
+          onClick={handleChangeEditMode}
         >
           X
         </Button>
@@ -88,7 +126,8 @@ export default function UserItem(props) {
       key === "name" ||
       key === "id" ||
       key === "deleteElement" ||
-      key === "editElement"
+      key === "editElement" ||
+      key === "nationality"
     ) {
       return false;
     } else {
@@ -111,6 +150,13 @@ export default function UserItem(props) {
     );
   });
 
+  const getListOfNationalities = Object.values(NATIONALITIES);
+  const optionsListOfNationalities = getListOfNationalities.map(
+    (nationality) => {
+      return <option key={getRandomKey()}>{nationality}</option>;
+    }
+  );
+
   return (
     <Card className="m-2" style={{ width: "15rem" }}>
       <div
@@ -119,27 +165,49 @@ export default function UserItem(props) {
       >
         <CloseButton variant="white" onClick={handleDeleteElement} />
       </div>
-      <Card.Img variant="top" src={props.picture} />
-      <Card.Header key={getRandomKey()}>
-        {editMode ? (
-          <Form.Control
-            className="border-top form-control-sm h5 data"
-            data-key="name"
-            defaultValue={props.name}
-          />
-        ) : (
-          <Form.Control
-            className="border-top form-control-sm h5"
-            plaintext
-            disabled
-            defaultValue={props.name}
-          />
-        )}
-      </Card.Header>
-      <ListGroup className="list-group-flush" style={{ width: "100%" }}>
-        {listGroupElements}
-      </ListGroup>
-      {editMode ? confirmButtons() : editButton()}
+      <Card.Img variant="top" src={props.picture} alt={props.name} />
+      <Form>
+        <Card.Header key={getRandomKey()}>
+          {editMode ? (
+            <Form.Control
+              className="border-top form-control-sm h5 data"
+              data-key="name"
+              defaultValue={props.name}
+            />
+          ) : (
+            <Form.Control
+              className="border-top form-control-sm h5"
+              plaintext
+              disabled
+              defaultValue={props.name}
+            />
+          )}
+        </Card.Header>
+        <ListGroup className="list-group-flush" style={{ width: "100%" }}>
+          {/**Nationality listgroup item */}
+          <ListGroup.Item key={getRandomKey()} className="py-0 px-2">
+            <Form.Label
+              column
+              sm="4"
+              className="text-capitalize text-secondary col-form-label-sm p-0"
+            >
+              {"Nationality"}:
+            </Form.Label>
+            {editMode ? (
+              <FormSelect size="sm" className="data" data-key="nationality">
+                <option>{props.nationality}</option>
+                {optionsListOfNationalities}
+              </FormSelect>
+            ) : (
+              defaultView(props.nationality)
+            )}
+          </ListGroup.Item>
+          {/**render listgroup items from props */}
+
+          {listGroupElements}
+        </ListGroup>
+        {editMode ? confirmButtons() : editButton()}
+      </Form>
     </Card>
   );
 }
