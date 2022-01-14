@@ -18,6 +18,7 @@ export default function UserItem(props) {
   const changeEditMode = () => {
     setEditMode(!editMode);
   };
+
   const handleChangeEditMode = (e) => {
     e.preventDefault();
     changeEditMode();
@@ -184,7 +185,7 @@ export default function UserItem(props) {
           )}
         </Card.Header>
         <ListGroup className="list-group-flush" style={{ width: "100%" }}>
-          {/**Nationality listgroup item */}
+          {/**Nationality list group items */}
           <ListGroup.Item key={getRandomKey()} className="py-0 px-2">
             <Form.Label
               column
@@ -202,8 +203,7 @@ export default function UserItem(props) {
               defaultView(props.nationality)
             )}
           </ListGroup.Item>
-          {/**render listgroup items from props */}
-
+          {/**render list group items from props */}
           {listGroupElements}
         </ListGroup>
         {editMode ? confirmButtons() : editButton()}
