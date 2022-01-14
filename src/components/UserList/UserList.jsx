@@ -14,7 +14,6 @@ export default function UserList() {
 
   const getUsersFromAPI = (lengthOfNewUsersList = 5, nationality, gender) => {
     const API = `https://randomuser.me/api?results=${lengthOfNewUsersList}&nat=${nationality}&gender=${gender}`;
-    // get data from the API
     axios.get(API).then((resp) => {
       const data = resp.data.results;
       const newUserList = data.map((user) => {
@@ -37,7 +36,6 @@ export default function UserList() {
     });
   };
 
-  // use in the UserFilter component
   const handleMultipleFilter = (lengthOfNewUsersList, nationality, gender) => {
     const getNationalityShortcut = Object.keys(NATIONALITIES).find(
       (key) => NATIONALITIES[key] === nationality
@@ -48,8 +46,6 @@ export default function UserList() {
   const handleDeleteList = () => {
     setUsers([]);
   };
-
-  // Use in the UserList component to modify the elements
 
   const deleteElement = (id) => {
     const newUserList = users.filter((user) => user.key !== id);

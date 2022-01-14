@@ -185,7 +185,6 @@ export default function UserItem(props) {
           )}
         </Card.Header>
         <ListGroup className="list-group-flush" style={{ width: "100%" }}>
-          {/**Nationality list group items */}
           <ListGroup.Item key={getRandomKey()} className="py-0 px-2">
             <Form.Label
               column
@@ -203,7 +202,6 @@ export default function UserItem(props) {
               defaultView(props.nationality)
             )}
           </ListGroup.Item>
-          {/**render list group items from props */}
           {listGroupElements}
         </ListGroup>
         {editMode ? confirmButtons() : editButton()}
