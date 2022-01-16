@@ -91,7 +91,7 @@ export default function UserItem(props) {
 
   const editButton = () => {
     return (
-      <div className="d-grid gap-2" style={{ width: "100%" }}>
+      <div className="d-grid gap-2 w-100">
         <Button variant="secondary" onClick={handleChangeEditMode}>
           Edit
         </Button>
@@ -101,19 +101,11 @@ export default function UserItem(props) {
 
   const confirmButtons = () => {
     return (
-      <div className="d-flex" style={{ width: "100%" }}>
-        <Button
-          variant="outline-success"
-          style={{ width: "80%" }}
-          onClick={updateElement}
-        >
+      <div className="d-flex w-100">
+        <Button variant="outline-success w-75" onClick={updateElement}>
           Confirm
         </Button>
-        <Button
-          variant="outline-danger"
-          style={{ width: "20%" }}
-          onClick={handleChangeEditMode}
-        >
+        <Button variant="outline-danger w-25" onClick={handleChangeEditMode}>
           X
         </Button>
       </div>
@@ -159,11 +151,8 @@ export default function UserItem(props) {
   );
 
   return (
-    <Card className="m-2" style={{ width: "15rem" }}>
-      <div
-        className="bg-dark d-flex flex-row-reverse p-1"
-        style={{ width: "100%" }}
-      >
+    <Card className="m-2 wrem-15">
+      <div className="bg-dark d-flex flex-row-reverse p-1 w-100">
         <CloseButton variant="white" onClick={handleDeleteElement} />
       </div>
       <Card.Img variant="top" src={props.picture} alt={props.name} />
@@ -184,7 +173,7 @@ export default function UserItem(props) {
             />
           )}
         </Card.Header>
-        <ListGroup className="list-group-flush" style={{ width: "100%" }}>
+        <ListGroup className="list-group-flush w-100">
           <ListGroup.Item key={getRandomKey()} className="py-0 px-2">
             <Form.Label
               column

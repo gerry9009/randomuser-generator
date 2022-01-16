@@ -1,4 +1,4 @@
-# Randomuser generator
+# Random user generator
 
 Building your first React project as a small web application with API's calls is the best way to learn and practice code.
 What was my goal when I came up with this project?
@@ -16,4 +16,4 @@ by nationalities, gender, user numbers.
 You can delete the whole database that we generated.
 You can edit and delete individual users from the list.
 
-## The webapplication published in [here](https://gerry9009.github.io/randomuser-generator/)
+## The webapplication is published in [here](https://gerry9009.github.io/randomuser-generator/)

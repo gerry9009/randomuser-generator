@@ -62,7 +62,7 @@ export default function UserList() {
     setUsers(newUserList);
   };
 
-  const insertUserElements = users.map((user) => {
+  const insertedUserElements = users.map((user) => {
     return (
       <UserItem
         picture={user.picture}
@@ -90,7 +90,7 @@ export default function UserList() {
         handleDeleteList={handleDeleteList}
       />
       <Container className="d-flex flex-row flex-wrap justify-content-center">
-        {insertUserElements}
+        {insertedUserElements}
       </Container>
     </>
   );
