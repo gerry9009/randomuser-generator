@@ -1,9 +1,9 @@
-import UserItem from "./UserItem/UserItem";
-import UserFilter from "./UserFilter/UserFilter";
+import UserItem from "../UserItem/UserItem";
+import UserFilter from "../UserFilter/UserFilter";
+import NATIONALITIES from "../constants/nationalities";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import NATIONALITIES from "../../constants/nationalities.js";
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -22,7 +22,6 @@ export default function UserList() {
           name: `${user.name.title} ${user.name.first} ${user.name.last}`,
           nationality: NATIONALITIES[user.nat],
           username: user.login.username,
-          password: user.login.password,
           gender: user.gender,
           born: user.dob.date.slice(0, 10),
           location: `${user.location.country}, ${user.location.state}, ${user.location.city}`,
@@ -69,7 +68,6 @@ export default function UserList() {
         name={user.name}
         nationality={user.nationality}
         username={user.username}
-        password={user.password}
         gender={user.gender}
         born={user.born}
         location={user.location}

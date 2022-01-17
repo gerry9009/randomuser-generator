@@ -7,10 +7,10 @@ import {
   Button,
   FormSelect,
 } from "react-bootstrap";
-import NATIONALITIES from "../../../constants/nationalities.js";
-import VALIDATIONS from "../../../constants/validations.js";
-import VALIDATIONSFEEDBACK from "../../../constants/validationsFeedback.js";
-import getRandomKey from "../../../constants/getRandomKey.js";
+import NATIONALITIES from "../constants/nationalities.js";
+import VALIDATIONS from "../constants/validations.js";
+import VALIDATION_FEEDBACK from "../constants/validationFeedback.js";
+import getRandomKey from "../constants/getRandomKey.js";
 
 export default function UserItem(props) {
   const [editMode, setEditMode] = useState(false);
@@ -81,9 +81,10 @@ export default function UserItem(props) {
           className="border-top form-control-sm data"
           data-key={propsKey}
           defaultValue={value}
+          id={propsKey}
         />
         <Form.Control.Feedback type="invalid">
-          {VALIDATIONSFEEDBACK[propsKey]}
+          {VALIDATION_FEEDBACK[propsKey]}
         </Form.Control.Feedback>
       </>
     );
@@ -135,6 +136,7 @@ export default function UserItem(props) {
           column
           sm="4"
           className="text-capitalize text-secondary col-form-label-sm p-0"
+          htmlFor={key}
         >
           {key}:
         </Form.Label>
@@ -149,7 +151,12 @@ export default function UserItem(props) {
       return <option key={getRandomKey()}>{nationality}</option>;
     }
   );
-
+  //!------------------------------------------------------------------------------------------------------------------------
+  //TODO szét kell majd jobban tördelni a return fgv-t, illetve a gender résznél radio buttonokat kell kirenderelni
+  //* password props már kikerült
+  //* A folder már módosítva lett
+  //* Removed password props. Changed folder structure. Fixed validation regexp.
+  //!------------------------------------------------------------------------------------------------------------------------
   return (
     <Card className="m-2 wrem-15">
       <div className="bg-dark d-flex flex-row-reverse p-1 w-100">
