@@ -14,6 +14,12 @@ import getRandomKey from "../constants/getRandomKey.js";
 
 export default function UserItem(props) {
   const [editMode, setEditMode] = useState(false);
+  const [genderValue, setGenderValue] = useState(props.gender);
+
+  const handleGenderRadioChange = () => {
+    const genderNewValue = genderValue === "male" ? "female" : "male";
+    setGenderValue(genderNewValue);
+  };
 
   const changeEditMode = () => {
     setEditMode(!editMode);
@@ -49,6 +55,7 @@ export default function UserItem(props) {
           props.editElement(props.id, key, datasetValueList[index]);
         }
       });
+      props.editElement(props.id, "gender", genderValue);
       changeEditMode();
     }
   };
@@ -113,6 +120,90 @@ export default function UserItem(props) {
     );
   };
 
+  const headerElement = (
+    <Card.Header key={getRandomKey()}>
+      {editMode ? (
+        <Form.Control
+          className="border-top form-control-sm h5 data"
+          data-key="name"
+          defaultValue={props.name}
+        />
+      ) : (
+        <Form.Control
+          className="border-top form-control-sm h5"
+          plaintext
+          disabled
+          defaultValue={props.name}
+        />
+      )}
+    </Card.Header>
+  );
+
+  const getListOfNationalities = Object.values(NATIONALITIES);
+  const optionsListOfNationalities = getListOfNationalities.map(
+    (nationality) => {
+      return <option key={getRandomKey()}>{nationality}</option>;
+    }
+  );
+
+  const listGroupNationality = (
+    <ListGroup.Item key={getRandomKey()} className="py-0 px-2">
+      <Form.Label
+        column
+        sm="4"
+        className="text-capitalize text-secondary col-form-label-sm p-0"
+      >
+        {"Nationality"}:
+      </Form.Label>
+      {editMode ? (
+        <FormSelect size="sm" className="data" data-key="nationality">
+          <option>{props.nationality}</option>
+          {optionsListOfNationalities}
+        </FormSelect>
+      ) : (
+        defaultView(props.nationality)
+      )}
+    </ListGroup.Item>
+  );
+
+  const listGroupGender = (
+    <ListGroup.Item key={getRandomKey()} className="py-0 px-2">
+      <Form.Label
+        column
+        sm="4"
+        className="text-capitalize text-secondary col-form-label-sm p-0"
+      >
+        {"Gender"}:
+      </Form.Label>
+      {editMode ? (
+        <div key={getRandomKey} className="mb-3">
+          <Form.Check
+            inline
+            name="gender"
+            label="male"
+            type="radio"
+            checked={genderValue === "male"}
+            onChange={() => {
+              handleGenderRadioChange();
+            }}
+          />
+          <Form.Check
+            inline
+            name="gender"
+            label="female"
+            type="radio"
+            checked={genderValue === "female"}
+            onChange={() => {
+              handleGenderRadioChange();
+            }}
+          />
+        </div>
+      ) : (
+        defaultView(props.gender)
+      )}
+    </ListGroup.Item>
+  );
+
   const propsKeys = Object.keys(props);
   const keysOfListGroup = propsKeys.filter((key) => {
     if (
@@ -121,7 +212,8 @@ export default function UserItem(props) {
       key === "id" ||
       key === "deleteElement" ||
       key === "editElement" ||
-      key === "nationality"
+      key === "nationality" ||
+      key === "gender"
     ) {
       return false;
     } else {
@@ -145,18 +237,6 @@ export default function UserItem(props) {
     );
   });
 
-  const getListOfNationalities = Object.values(NATIONALITIES);
-  const optionsListOfNationalities = getListOfNationalities.map(
-    (nationality) => {
-      return <option key={getRandomKey()}>{nationality}</option>;
-    }
-  );
-  //!------------------------------------------------------------------------------------------------------------------------
-  //TODO szét kell majd jobban tördelni a return fgv-t, illetve a gender résznél radio buttonokat kell kirenderelni
-  //* password props már kikerült
-  //* A folder már módosítva lett
-  //* Removed password props. Changed folder structure. Fixed validation regexp.
-  //!------------------------------------------------------------------------------------------------------------------------
   return (
     <Card className="m-2 wrem-15">
       <div className="bg-dark d-flex flex-row-reverse p-1 w-100">
@@ -164,40 +244,10 @@ export default function UserItem(props) {
       </div>
       <Card.Img variant="top" src={props.picture} alt={props.name} />
       <Form>
-        <Card.Header key={getRandomKey()}>
-          {editMode ? (
-            <Form.Control
-              className="border-top form-control-sm h5 data"
-              data-key="name"
-              defaultValue={props.name}
-            />
-          ) : (
-            <Form.Control
-              className="border-top form-control-sm h5"
-              plaintext
-              disabled
-              defaultValue={props.name}
-            />
-          )}
-        </Card.Header>
+        {headerElement}
         <ListGroup className="list-group-flush w-100">
-          <ListGroup.Item key={getRandomKey()} className="py-0 px-2">
-            <Form.Label
-              column
-              sm="4"
-              className="text-capitalize text-secondary col-form-label-sm p-0"
-            >
-              {"Nationality"}:
-            </Form.Label>
-            {editMode ? (
-              <FormSelect size="sm" className="data" data-key="nationality">
-                <option>{props.nationality}</option>
-                {optionsListOfNationalities}
-              </FormSelect>
-            ) : (
-              defaultView(props.nationality)
-            )}
-          </ListGroup.Item>
+          {listGroupNationality}
+          {listGroupGender}
           {listGroupElements}
         </ListGroup>
         {editMode ? confirmButtons() : editButton()}
