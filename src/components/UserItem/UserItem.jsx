@@ -61,12 +61,19 @@ export default function UserItem(props) {
   };
 
   const validation = (item) => {
+    const labelElement = item.previousElementSibling;
+    if (labelElement && [...labelElement.classList].includes("text-danger")) {
+      item.previousElementSibling.classList.remove("text-danger");
+    }
     item.classList.remove("is-invalid");
     const itemValue = item.value.toString();
     const itemKey = item.dataset.key;
     const regex = new RegExp(VALIDATIONS[itemKey]);
     if (!regex.test(itemValue)) {
       item.classList.add("is-invalid");
+      if (labelElement) {
+        labelElement.classList.add("text-danger");
+      }
     }
     return regex.test(itemValue);
   };
@@ -89,6 +96,9 @@ export default function UserItem(props) {
           data-key={propsKey}
           defaultValue={value}
           id={propsKey}
+          onChange={(e) => {
+            validation(e.target);
+          }}
         />
         <Form.Control.Feedback type="invalid">
           {VALIDATION_FEEDBACK[propsKey]}
@@ -127,6 +137,9 @@ export default function UserItem(props) {
           className="border-top form-control-sm h5 data"
           data-key="name"
           defaultValue={props.name}
+          onChange={(e) => {
+            validation(e.target);
+          }}
         />
       ) : (
         <Form.Control
