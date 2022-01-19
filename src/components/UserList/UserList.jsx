@@ -1,12 +1,17 @@
 import UserItem from "../UserItem/UserItem";
 import UserFilter from "../UserFilter/UserFilter";
-import NATIONALITIES from "../constants/nationalities";
+import NATIONALITIES from "../../constants/nationalities";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
+  const [disable, setDisable] = useState(false);
+
+  const changeDisable = () => {
+    setDisable(!disable);
+  };
 
   useEffect(() => {
     getUsersFromAPI();
@@ -77,6 +82,8 @@ export default function UserList() {
         id={user.key}
         deleteElement={deleteElement}
         editElement={editElement}
+        disable={disable}
+        changeDisable={changeDisable}
       />
     );
   });

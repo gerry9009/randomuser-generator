@@ -7,10 +7,10 @@ import {
   Button,
   FormSelect,
 } from "react-bootstrap";
-import NATIONALITIES from "../constants/nationalities.js";
-import VALIDATIONS from "../constants/validations.js";
-import VALIDATION_FEEDBACK from "../constants/validationFeedback.js";
-import getRandomKey from "../constants/getRandomKey.js";
+import NATIONALITIES from "../../constants/nationalities.js";
+import VALIDATIONS from "../../constants/validations.js";
+import VALIDATION_FEEDBACK from "../../constants/validationFeedback.js";
+import getRandomKey from "../../constants/getRandomKey.js";
 
 export default function UserItem(props) {
   const [editMode, setEditMode] = useState(false);
@@ -23,6 +23,7 @@ export default function UserItem(props) {
 
   const changeEditMode = () => {
     setEditMode(!editMode);
+    props.changeDisable();
   };
 
   const handleChangeEditMode = (e) => {
@@ -92,7 +93,7 @@ export default function UserItem(props) {
     return (
       <>
         <Form.Control
-          className="border-top form-control-sm data"
+          className="form-control-sm data m-0"
           data-key={propsKey}
           defaultValue={value}
           id={propsKey}
@@ -110,7 +111,11 @@ export default function UserItem(props) {
   const editButton = () => {
     return (
       <div className="d-grid gap-2 w-100">
-        <Button variant="secondary" onClick={handleChangeEditMode}>
+        <Button
+          variant="secondary"
+          onClick={handleChangeEditMode}
+          disabled={props.disable}
+        >
           Edit
         </Button>
       </div>
@@ -226,7 +231,9 @@ export default function UserItem(props) {
       key === "deleteElement" ||
       key === "editElement" ||
       key === "nationality" ||
-      key === "gender"
+      key === "gender" ||
+      key === "disable" ||
+      key === "changeDisable"
     ) {
       return false;
     } else {
@@ -251,7 +258,7 @@ export default function UserItem(props) {
   });
 
   return (
-    <Card className="m-2 wrem-15">
+    <Card className="m-2 wrem-16">
       <div className="bg-dark d-flex flex-row-reverse p-1 w-100">
         <CloseButton variant="white" onClick={handleDeleteElement} />
       </div>

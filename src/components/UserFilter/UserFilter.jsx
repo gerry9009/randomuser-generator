@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import NATIONALITIES from "../constants/nationalities.js";
-import getRandomKey from "../constants/getRandomKey.js";
+import NATIONALITIES from "../../constants/nationalities.js";
+import getRandomKey from "../../constants/getRandomKey.js";
 import {
   Button,
   Form,
