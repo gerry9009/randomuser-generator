@@ -17,6 +17,13 @@
   width: 15rem;
 }
 
+.zindex {
+  position: fixed;
+  z-index: 100;
+  bottom: 10px;
+  left: 0;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
