@@ -194,28 +194,32 @@ export default function UserItem(props) {
         {"Gender"}:
       </Form.Label>
       {editMode ? (
-        <div key={getRandomKey} className="mb-3">
-          <Form.Check
-            inline
-            name="gender"
-            label="male"
-            type="radio"
-            checked={genderValue === "male"}
-            onChange={() => {
-              handleGenderRadioChange();
-            }}
-          />
-          <Form.Check
-            inline
-            name="gender"
-            label="female"
-            type="radio"
-            checked={genderValue === "female"}
-            onChange={() => {
-              handleGenderRadioChange();
-            }}
-          />
-        </div>
+        <Form>
+          <div key={getRandomKey} className="mb-3">
+            <Form.Check
+              inline
+              name="gender"
+              id="male"
+              label="male"
+              type="radio"
+              checked={genderValue === "male"}
+              onChange={() => {
+                handleGenderRadioChange();
+              }}
+            />
+            <Form.Check
+              inline
+              name="gender"
+              id="female"
+              label="female"
+              type="radio"
+              checked={genderValue === "female"}
+              onChange={() => {
+                handleGenderRadioChange();
+              }}
+            />
+          </div>
+        </Form>
       ) : (
         defaultView(props.gender)
       )}
